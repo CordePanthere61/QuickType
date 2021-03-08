@@ -7,34 +7,44 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1600">
     <Grid>
-        <TextBox HorizontalAlignment="Left" 
-                 Margin="67,0,0,0" 
-                 Text="TextBox" 
-                 TextWrapping="Wrap"
-                 VerticalAlignment="Center" 
-                 Width="530" 
-                 Height="630"
-                 BorderBrush="Black"/>
-        
-        <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" 
-                   Margin="654,0,0,0" 
-                   Text="TextBlock" 
-                   TextWrapping="Wrap" 
-                   VerticalAlignment="Center" 
-                   Height="630" 
-                   Width="530"/>
-        </Border>
+
+        <TextBox
+                Text ="{Binding JsonText}"                
+                HorizontalAlignment="Left" 
+                Margin="67,0,0,0" 
+                TextWrapping="Wrap"
+                VerticalAlignment="Center" 
+                Width="530" 
+                Height="630"
+                BorderBrush="Black"/>
+
+        <Label 
+                Content="{Binding ConvertedText}"
+                HorizontalAlignment="Left" 
+                Margin="654,0,0,0" 
+                VerticalAlignment="Center" 
+                Height="630" 
+                Width="530"
+                BorderBrush="Black"
+                BorderThickness="1">
+        </Label>
+
+        <Button
+            Command="{Binding JsonConvertCommand}"
+            Content="Button"
+            HorizontalAlignment="Left" 
+            Margin="606,0,0,0" 
+            VerticalAlignment="Center"/>
 
         <Rectangle HorizontalAlignment="Left" 
-                   Height="423" 
-                   Margin="1292,77,0,0" 
+                   Height="630" 
+                   Margin="1292,0,0,0"
                    Stroke="Black" 
-                   VerticalAlignment="Top" 
+                   VerticalAlignment="Center" 
                    Width="256" RenderTransformOrigin="0.5,0.5">
 
         </Rectangle>
-        
+
         <TextBlock HorizontalAlignment="Left" 
                    Margin="1307,93,0,0" 
                    Text="Langage" 
@@ -43,15 +53,17 @@
                    Height="28" 
                    Width="212" 
                    FontSize="20"/>
-        
-        <ComboBox HorizontalAlignment="Left" 
-                  Margin="1307,135,0,0" 
-                  VerticalAlignment="Top" 
-                  Width="212" 
-                  Height="23"
-                  FontSize="12">
-            <ComboBoxItem IsSelected="True">C#</ComboBoxItem>
-            <ComboBoxItem>Java</ComboBoxItem>
+
+        <ComboBox 
+                SelectedIndex="{Binding SelectedLanguage}"
+                HorizontalAlignment="Left" 
+                Margin="1307,135,0,0" 
+                VerticalAlignment="Top" 
+                Width="212" 
+                Height="23"
+                FontSize="12">
+            <ComboBoxItem IsSelected="True" Name="Csharp">C#</ComboBoxItem>
+            <ComboBoxItem Name="Java">Java</ComboBoxItem>
         </ComboBox>
 
     </Grid>

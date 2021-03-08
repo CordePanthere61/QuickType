@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TP2.Library\TP2.Library.csproj" />
+  </ItemGroup>
+
 </Project>
