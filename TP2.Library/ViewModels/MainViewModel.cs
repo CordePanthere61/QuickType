@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using SimpleMvvmToolkit.Express;
+using TP2.Library.Models;
 
 namespace TP2.Library
 {
@@ -9,9 +10,12 @@ namespace TP2.Library
     {
         private const string JSON_TEXTBOX_DEFAULT_VALUE = "Entrez du JSON ici...";
 
+        private Dictionary<int, IClassTemplate> AvaiableLanguages;
+
         private string _jsonText;
         private string _convertedText;
         private string _selectedLanguage;
+        private string _className;
 
         public ICommand JsonConvertCommand => new DelegateCommand(ConvertJson, CanConvertJson);
 
@@ -45,9 +49,22 @@ namespace TP2.Library
             }
         }
 
+        public string ClassName
+        {
+            get => _className;
+            set
+            {
+                _className = value;
+                NotifyPropertyChanged(vm => vm.ClassName);
+            }
+        }
+
         public MainViewModel()
         {
             JsonText = JSON_TEXTBOX_DEFAULT_VALUE;
+            AvaiableLanguages = new Dictionary<int, IClassTemplate>();
+            //AvaiableLanguages.Add(0, new JavaClass(this));
+            AvaiableLanguages.Add(1, new CsharpClass(this));
         }
 
         private void ConvertJson()

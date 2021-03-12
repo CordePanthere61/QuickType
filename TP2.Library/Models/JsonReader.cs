@@ -4,18 +4,16 @@ using System.Text;
 
 namespace TP2.Library.Models
 {
-    interface IClassTemplate
+    class JsonReader
     {
-        List<Variable> Variables
+        public JsonReader(string plainText)
         {
-            get;
-            set;
+
         }
 
-        string Name
+        public List<Variable> GetVariables()
         {
-            get;
-            set;
+            return null;
         }
     }
 }

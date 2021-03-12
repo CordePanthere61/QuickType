@@ -31,7 +31,9 @@
 
         <Button
             Command="{Binding JsonConvertCommand}"
-            Content="Button"
+            FontFamily="Marlett"
+            FontSize="30"
+            Content="4"
             HorizontalAlignment="Left" 
             Margin="606,0,0,0" 
             VerticalAlignment="Center"/>
@@ -65,6 +67,23 @@
             <ComboBoxItem IsSelected="True" Name="Csharp">C#</ComboBoxItem>
             <ComboBoxItem Name="Java">Java</ComboBoxItem>
         </ComboBox>
+
+        <Label 
+            Content="Nom de la classe : " 
+            HorizontalAlignment="Left" 
+            Margin="67,41,0,0" 
+            VerticalAlignment="Top"
+            FontSize="16"/>
+
+        <TextBox 
+            Text="{Binding ClassName}"
+            HorizontalAlignment="Left" 
+            Margin="209,44,0,0" 
+            FontSize="16"
+            TextWrapping="Wrap" 
+            VerticalAlignment="Top" 
+            Width="140" 
+            Height="25"/>
 
     </Grid>
 </Window>
