@@ -14,7 +14,7 @@ namespace TP2.Library
 
         private string _jsonText;
         private string _convertedText;
-        private string _selectedLanguage;
+        private int _selectedLanguage;
         private string _className;
 
         public ICommand JsonConvertCommand => new DelegateCommand(ConvertJson, CanConvertJson);
@@ -39,13 +39,14 @@ namespace TP2.Library
             }
         }
 
-        public string SelectedLanguage
+        public int SelectedLanguage
         {
             get => _selectedLanguage;
             set
             {
                 _selectedLanguage = value;
                 NotifyPropertyChanged(vm => vm.SelectedLanguage);
+                ConvertJson();
             }
         }
 
@@ -63,13 +64,14 @@ namespace TP2.Library
         {
             JsonText = JSON_TEXTBOX_DEFAULT_VALUE;
             AvaiableLanguages = new Dictionary<int, IClassTemplate>();
-            //AvaiableLanguages.Add(0, new JavaClass(this));
-            AvaiableLanguages.Add(1, new CsharpClass(this));
+            //AvaiableLanguages.Add(0, new JavaClass());
+            AvaiableLanguages.Add(0, new CsharpClass());
         }
 
         private void ConvertJson()
         {
-            ConvertedText = SelectedLanguage;
+            AvaiableLanguages[SelectedLanguage].Generate(ClassName, JsonText);
+            ConvertedText = AvaiableLanguages[SelectedLanguage].Format();
         }
 
         private bool CanConvertJson()

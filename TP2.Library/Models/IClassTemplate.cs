@@ -6,16 +6,20 @@ namespace TP2.Library.Models
 {
     interface IClassTemplate
     {
-        List<Variable> Variables
+        string PlainText { get; set; } 
+        List<Variable> Variables { get; set; }
+
+        string Type { get; set; }
+
+        List<Method> Methods { get; set; }
+
+        string Name { get; set; }
+
+        string Format()
         {
-            get;
-            set;
+            return PlainText;
         }
 
-        string Name
-        {
-            get;
-            set;
-        }
+        void Generate(string className, string plainText);
     }
 }

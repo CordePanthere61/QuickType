@@ -13,10 +13,12 @@
                 HorizontalAlignment="Left" 
                 Margin="67,0,0,0" 
                 TextWrapping="Wrap"
+                FontSize="14"
                 VerticalAlignment="Center" 
                 Width="530" 
                 Height="630"
-                BorderBrush="Black"/>
+                BorderBrush="Black"
+                AcceptsReturn="True"/>
 
         <Label 
                 Content="{Binding ConvertedText}"

@@ -6,16 +6,34 @@ namespace TP2.Library.Models
 {
     class CsharpClass : IClassTemplate
     {
-        public string Name { get; set; }
-        public List<Variable> Variables { get; set; }
+        private string _name;
+        private string _plainText;
+        private string _type = "C#";
+        private List<Variable> _variables;
+        private List<Method> _methods;
 
         private JsonReader _reader;
 
-        public CsharpClass(MainViewModel vm)
+        public string Name { get => _name; set => _name = value; }
+        public List<Variable> Variables { get => _variables; set => _variables = value; }
+        public List<Method> Methods { get => _methods; set => _methods = value; }
+        public string PlainText { get => _plainText; set => _plainText = value; }
+        public string Type { get => _type; set => _type = value; }
+
+
+        public CsharpClass()
         {
-            _reader = new JsonReader(vm.JsonText);
-            Name = vm.ClassName;
-            Variables = _reader.GetVariables();
+            _reader = new JsonReader();
+        }
+
+        public void Generate(string className, string plainText)
+        {
+            Name = className;
+            _reader.Parse(plainText, this);
+            foreach (Variable variable in Variables)
+            {
+                PlainText += variable.Format();
+            }
         }
     }
 }
