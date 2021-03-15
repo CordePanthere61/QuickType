@@ -9,7 +9,6 @@ namespace TP2.Library.Models
         
         List<Variable> Variables { get; set; }
 
-        List<Method> Methods { get; set; }
         string PlainText { get; set; }
 
         string Name { get; set; }
@@ -26,5 +25,6 @@ namespace TP2.Library.Models
         abstract string FormatClassName();
 
         abstract string FormatVariables();
+
     }
 }

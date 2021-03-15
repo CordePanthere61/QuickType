@@ -9,6 +9,7 @@ namespace TP2.Library
     public class MainViewModel : ViewModelBase<MainViewModel>
     {
         private const string JSON_TEXTBOX_DEFAULT_VALUE = "Entrez du JSON ici...";
+        private const string INVALID_JSON = "Json entrée invalide...";
 
         private Dictionary<int, IClassTemplate> AvaiableLanguages;
 
@@ -74,8 +75,10 @@ namespace TP2.Library
             {
                 AvaiableLanguages[SelectedLanguage].Generate(ClassName, JsonText);
                 ConvertedText = AvaiableLanguages[SelectedLanguage].Format();
+            } else
+            {
+                ConvertedText = INVALID_JSON;
             }
-            
         }
 
         private bool CanConvertJson()
