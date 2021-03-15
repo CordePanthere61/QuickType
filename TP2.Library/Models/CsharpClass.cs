@@ -9,6 +9,7 @@ namespace TP2.Library.Models
         private string _name;
         private string _plainText;
         private string _type = "C#";
+        private string _namespace = "QuickType";
         private List<Variable> _variables;
         private List<Method> _methods;
 
@@ -19,6 +20,7 @@ namespace TP2.Library.Models
         public List<Method> Methods { get => _methods; set => _methods = value; }
         public string PlainText { get => _plainText; set => _plainText = value; }
         public string Type { get => _type; set => _type = value; }
+        public string Namespace { get => _namespace; set => _namespace = value; }
 
 
         public CsharpClass()
@@ -30,10 +32,32 @@ namespace TP2.Library.Models
         {
             Name = className;
             _reader.Parse(plainText, this);
+            PlainText = FormatText();
+        }
+
+        public string FormatText()
+        {
+            return FormatNameSpace() + FormatClassName() + FormatVariables();
+        }
+
+        public string FormatNameSpace()
+        {
+            return $"namespace {Namespace} \n{{\n";
+        }
+
+        public string FormatClassName()
+        {
+            return $"    public class {Name}\n    {{\n";
+        }
+
+        public string FormatVariables()
+        {
+            string returnValue = "";
             foreach (Variable variable in Variables)
             {
-                PlainText += variable.Format();
+                returnValue += $"        {variable.Format()}";
             }
+            return returnValue;
         }
     }
 }

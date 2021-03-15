@@ -64,14 +64,18 @@ namespace TP2.Library
         {
             JsonText = JSON_TEXTBOX_DEFAULT_VALUE;
             AvaiableLanguages = new Dictionary<int, IClassTemplate>();
-            //AvaiableLanguages.Add(0, new JavaClass());
             AvaiableLanguages.Add(0, new CsharpClass());
+            AvaiableLanguages.Add(1, new JavaClass());
         }
 
         private void ConvertJson()
         {
-            AvaiableLanguages[SelectedLanguage].Generate(ClassName, JsonText);
-            ConvertedText = AvaiableLanguages[SelectedLanguage].Format();
+            if (Validator.IsJsonValid(JsonText))
+            {
+                AvaiableLanguages[SelectedLanguage].Generate(ClassName, JsonText);
+                ConvertedText = AvaiableLanguages[SelectedLanguage].Format();
+            }
+            
         }
 
         private bool CanConvertJson()
