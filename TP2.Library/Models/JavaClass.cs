@@ -18,7 +18,7 @@ namespace TP2.Library.Models
         public string Type { get => _type; set => _type = value; }
         public string PlainText { get => _plainText; set => _plainText = value; }
 
-        public JavaClass()
+        public JavaClass() 
         {
             _reader = new JsonReader();
         }
