@@ -20,7 +20,6 @@ namespace TP2.Library.Models
         {
             _plainText = plainText;
             var objects = JObject.Parse(plainText);
-            generatedClass.Variables = ParseVariables(objects);
             JObject root = JObject.Parse(plainText);
             GenerateVariables(root, generatedClass);
         }
@@ -31,74 +30,57 @@ namespace TP2.Library.Models
             {
                 foreach (var child in root.Properties())
                 {
-                    if (child.Type == JTokenType.Object)
+                    if (child.Value.Type == JTokenType.Object)
                     {
-                        RecursiveGenerateClassVariable(child, generatedClass);
+                        RecursiveGenerateClassVariable(child, null, generatedClass);
+                    } else
+                    {
+                        generatedClass.Variables.Add(GenerateVariable(child, true));
                     }
-                    generatedClass.Variables.Add(GeneratePrimitiveVariable(child));
                 }
-                
             }
         }
 
-        private void RecursiveGenerateClassVariable(JProperty child, IClassTemplate generatedClass)
+        private void RecursiveGenerateClassVariable(JProperty child, Variable parent, IClassTemplate generatedClass)
         {
-            if (child.Type != JTokenType.Object)
+            if (child.Value.Type != JTokenType.Object)
             {
                 return;
             }
-            Variable classVariable = GenerateClassVariable(child);
+            Variable classVariable = GenerateVariable(child, false);
             if (child.Count != 0)
             {
-                foreach (var innerChild in child.Children())
+                JObject jObject = (JObject)child.Value;
+                foreach (var innerChild in jObject.Properties())
                 {
-                    RecursiveGenerateClassVariable((JProperty)innerChild, generatedClass);
-                    classVariable.Variables.Add(GeneratePrimitiveVariable((JProperty)innerChild));
+                    RecursiveGenerateClassVariable(innerChild, classVariable, generatedClass);
+                    if (innerChild.Value.Type != JTokenType.Object)
+                    {
+                        classVariable.Variables.Add(GenerateVariable(innerChild, true));
+                    }
                 }
             }
+            if (parent == null)
+            {
+                generatedClass.Variables.Add(classVariable);
+                return;
+            } 
+            parent.Variables.Add(classVariable);
         }
 
-        private List<Variable> ParseVariables(JContainer objects)
+        private Variable GenerateVariable(JProperty child, bool isPrimitive)
         {
-            List<Variable> variables = new List<Variable>();
-            foreach (var value in objects) {
-                variables.Add(GenerateVariable(value.ToString()));
+            Variable variable = new Variable();
+            variable.Visibility = "public";
+            variable.Type = child.Value.Type.ToString();
+            variable.Name = child.Name;
+            variable.Value = child.Value.ToString();
+            if (!isPrimitive)
+            {
+                variable.Variables = new List<Variable>();
+                return variable;
             }
-            return variables;
-        }
-
-        private Variable GenerateVariable(string value)
-        {
-            Variable variable = new Variable();
-            var values = value.Split(":");
-            variable.Visibility = "public";
-            variable.Type = "string";
-            variable.Name = values[0].Trim('"');
-            variable.Value = values[1];
-            return variable;
-        }
-
-        //TODO faire une seule methode pour ces deux la ci dessous
-
-        private Variable GeneratePrimitiveVariable(JProperty child)
-        {
-            Variable variable = new Variable();
-            variable.Visibility = "public";
-            variable.Type = child.Type.ToString();
-            variable.Name = child.Name;
-            variable.Value = child.Value.ToString();
             variable.Variables = null;
-            return variable;
-        }
-
-        private Variable GenerateClassVariable(JProperty child)
-        {
-            Variable variable = new Variable();
-            variable.Visibility = "public";
-            variable.Type = child.Type.ToString();
-            variable.Name = child.Name;
-            variable.Value = child.Value.ToString();
-            variable.Variables = new List<Variable>();
             return variable;
         }
     }

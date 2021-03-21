@@ -14,5 +14,10 @@ namespace TP2
             InitializeComponent();
             DataContext = new MainViewModel();
         }
+
+        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
     }
 }

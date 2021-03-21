@@ -9,6 +9,7 @@ namespace TP2.Library.Models
         
         List<Variable> Variables { get; set; }
 
+
         string PlainText { get; set; }
 
         string Name { get; set; }
@@ -18,13 +19,20 @@ namespace TP2.Library.Models
         {
             return PlainText;
         }
-        abstract void Generate(string className, string plainText);
+
+        abstract void Generate(string className, string JsonText);
 
         abstract string FormatText();
 
         abstract string FormatClassName();
 
         abstract string FormatVariables();
+
+        abstract string FormatPrimitiveVariables();
+
+        abstract string FormatClassVariables(List<Variable> variables);
+
+        abstract void RecursiveFindClassVariables(Variable variable, List<Variable> classVariables);
 
     }
 }

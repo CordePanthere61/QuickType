@@ -26,6 +26,7 @@ namespace TP2.Library.Models
 
         public void Generate(string className, string plainText)
         {
+            Variables = new List<Variable>();
             Name = className;
             _reader.Parse(plainText, this);
             PlainText = FormatText();
@@ -33,7 +34,7 @@ namespace TP2.Library.Models
 
         public string FormatText()
         {
-            return FormatNameSpace() + FormatClassName() + FormatVariables();
+            return FormatNameSpace() + FormatClassName() + FormatVariables() + "}";
         }
 
         public string FormatNameSpace()
@@ -48,12 +49,58 @@ namespace TP2.Library.Models
 
         public string FormatVariables()
         {
+            List<Variable> classVariables = new List<Variable>();
+            foreach (Variable variable in Variables)
+            {
+                RecursiveFindClassVariables(variable, classVariables);
+            }
+            return FormatPrimitiveVariables() + FormatClassVariables(classVariables);
+        }
+
+        public void RecursiveFindClassVariables(Variable variable, List<Variable> classVariables)
+        {
+            if (variable.Variables == null)
+            {
+                return;
+            }
+            classVariables.Add(variable);
+            foreach (Variable innerVariable in variable.Variables)
+            {
+                RecursiveFindClassVariables(innerVariable, classVariables);
+            }
+        }
+
+        public string FormatClassVariables(List<Variable> classVariables)
+        {
+            string returnValue = "";
+            foreach (Variable variable in classVariables)
+            {
+                returnValue += $"    {variable.Visibility} partial class {char.ToUpper(variable.Name[0]) + variable.Name.Substring(1)}\n    {{\n";
+                foreach (Variable innerVariable in variable.Variables)
+                {
+                    returnValue += $"        [JsonProperty(\"{innerVariable.Name}\")]\n";
+                    returnValue += $"        {innerVariable.Visibility} {char.ToUpper(innerVariable.Name[0]) + innerVariable.Name.Substring(1)} {innerVariable.Name} {{ get; set; }}\n\n";
+                }
+                returnValue += "    }\n\n";
+            }
+            return returnValue;
+        }
+
+        public string FormatPrimitiveVariables()
+        {
             string returnValue = "";
             foreach (Variable variable in Variables)
             {
-                returnValue += $"        {variable.Format()}";
+                returnValue += $"        [JsonProperty(\"{variable.Name}\")]\n";
+                if (variable.Variables != null)
+                {
+                    returnValue += $"        {variable.Visibility} {char.ToUpper(variable.Name[0]) + variable.Name.Substring(1)} {variable.Name} {{ get; set; }}\n\n";
+                } else
+                {
+                    returnValue += $"        {variable.Visibility} {variable.Type} {variable.Name} {{ get; set; }}\n\n";
+                }
             }
-            return returnValue;
+            return returnValue + "    }\n\n";
         }
     }
 }
